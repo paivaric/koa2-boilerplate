@@ -5,4 +5,5 @@ test:
 		--harmony \
 		--reporter spec \
 		--require should \
-		test/*.js
+		--recursive \
+		test

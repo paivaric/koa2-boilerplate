@@ -8,7 +8,15 @@ describe('Hello World', function () {
     request
       .get('/')
       .expect(200)
-      .expect('Hello World', done)
+      .expect('Hello World')
+      .end(done)
+  })
+
+  it('should receive 404', function (done) {
+    request
+      .get('/xxx')
+      .expect(404)
+      .end(done)
   })
 })
 
