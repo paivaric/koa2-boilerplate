@@ -2,7 +2,8 @@
 
 import mongoose from 'mongoose'
 import validate from 'mongoose-validator';
-import bcrypt from 'bcrypt-as-promised';
+import crypto from 'crypto';
+import nconf from 'nconf';
 import mongooseAutopopulate from 'mongoose-autopopulate';
 import mongooseJsonSelect from 'mongoose-json-select';
 
@@ -45,7 +46,7 @@ schema.virtual('password')
 schema.pre('save', async function preSave(next) {
   if (!this.password) return next()
   try {
-    this.hashedPassword = await bcrypt.hash(this.password)
+    this.hashedPassword = crypto.createHash('sha1').update(this.password + nconf.get('SALT')).digest('hex')
     next()
   } catch ( error ) {
     next(error)

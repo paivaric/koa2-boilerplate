@@ -9,9 +9,10 @@ const expect = chai.expect
 
 describe('user controller', () => {
 
-  before(User.remove.bind(User));
-
   describe('create', () => {
+
+    before(User.remove.bind(User));
+
     let user = {
       name: 'foo',
       email: 'email@email.com',
@@ -24,6 +25,32 @@ describe('user controller', () => {
         .send(user)
         .expect(200)
         .expect((res) => {
+          expect(res.body._id).to.be.ok
+        })
+        .end(done)
+    })
+  })
+
+  describe('login', () => {
+
+    before(User.remove.bind(User));
+
+    let user;
+    before( (done) => {
+      user = new User();
+      user.name = 'foo';
+      user.email = 'foo@domain.com';
+      user.password = 'pass';
+      user.save(done);
+    });
+
+    it('should login', function (done) {
+      request
+        .get(`/api/v1/users/${user.id}`)
+        .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
+        .expect(200)
+        .expect((res) => {
+          console.log(res.body._id)
           expect(res.body._id).to.be.ok
         })
         .end(done)

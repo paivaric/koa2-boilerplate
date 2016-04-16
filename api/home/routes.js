@@ -1,6 +1,6 @@
 import Router from 'koa-router'
 
-const router = new Router()
+const router = Router()
 
 router
   .get('/', async ctx => ctx.body = 'Hello World')
