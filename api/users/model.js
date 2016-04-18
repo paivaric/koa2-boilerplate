@@ -4,8 +4,11 @@ import mongoose from 'mongoose'
 import validate from 'mongoose-validator';
 import crypto from 'crypto';
 import nconf from 'nconf';
+import _ from 'lodash';
 import mongooseAutopopulate from 'mongoose-autopopulate';
 import mongooseJsonSelect from 'mongoose-json-select';
+import update from 'mongoose-model-update';
+
 
 const schema = new mongoose.Schema({
   name: {
@@ -52,5 +55,7 @@ schema.pre('save', async function preSave(next) {
     next(error)
   }
 })
+
+schema.plugin(update, ['name', 'password']);
 
 export default mongoose.model('User', schema)
