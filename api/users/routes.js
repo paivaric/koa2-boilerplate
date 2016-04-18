@@ -11,10 +11,10 @@ router.param('id', async (id, ctx, next) => {
     ctx.status = 404;
     ctx.body = 'User not found'
     ctx.app.emit('error', new Error(ctx.body), ctx)
-    return;
+  } else {
+    ctx.user = user
+    await next();
   }
-  ctx.user = user
-  await next();
 })
 
 let checkSameUser = async (ctx, next) => {
@@ -23,9 +23,9 @@ let checkSameUser = async (ctx, next) => {
     ctx.status = 403
     ctx.body = 'User not authorized'
     ctx.app.emit('error', new Error(ctx.body), ctx)
-    return;
+  } else {
+    await next();
   }
-  await next();
 }
 
 router

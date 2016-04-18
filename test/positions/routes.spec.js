@@ -83,113 +83,159 @@ describe('position controller', () => {
     })
   })
 
-  // describe('update', () => {
+  describe('update', () => {
+    before(User.remove.bind(User));
+    before(Position.remove.bind(Position));
 
-  //   describe('without permission', () => {
-  //     before(User.remove.bind(User));
+    let user;
+    before( (done) => {
+      user = new User();
+      user.name = 'foo';
+      user.email = 'foo@domain.com';
+      user.password = 'pass';
+      user.save(done);
+    });
 
-  //     let user;
-  //     before( (done) => {
-  //       user = new User();
-  //       user.name = 'foo';
-  //       user.email = 'foo@domain.com';
-  //       user.password = 'pass';
-  //       user.save(done);
-  //     });
+    let user2;
+    before( (done) => {
+      user2 = new User();
+      user2.name = 'foo2';
+      user2.email = 'foo2@domain.com';
+      user2.password = 'pass2';
+      user2.save(done);
+    });
 
-  //     it('should update user', function (done) {
-  //       request
-  //         .put(`/api/v1/users/${user.id}`)
-  //         .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
-  //         .send({name: 'bar'})
-  //         .expect(403)
-  //         .end(done)
-  //     })
-  //   })
+    let position;
+    before( (done) => {
+      position = new Position();
+      position.title = 'title1';
+      position.description = 'description1';
+      position.city = 'city1';
+      position.state = 'state1';
+      position.status = 'status1';
+      position.createdBy = user.id;
+      position.save(done);
+    });
 
-  //   describe('with permission', () => {
-  //     before(User.remove.bind(User));
+    describe('with wrong credentials', () => {
 
-  //     let user;
-  //     before( (done) => {
-  //       user = new User();
-  //       user.name = 'foo';
-  //       user.email = 'foo@domain.com';
-  //       user.password = 'pass';
-  //       user.save(done);
-  //     });
+      it('should raise 403', function (done) {
+        request
+          .put(`/api/v1/positions/${position.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
+          .send({title: 'title updated'})
+          .expect(403)
+          .end(done)
+      })
+    })
 
-  //     it('should update user', function (done) {
-  //       request
-  //         .put(`/api/v1/users/${user.id}`)
-  //         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
-  //         .send({name: 'bar'})
-  //         .send({email: 'cannotupdate@gmail.com'})
-  //         .expect(200)
-  //         .expect((res) => {
-  //           expect(res.body.name).to.be.eql('bar')
-  //           expect(res.body.email).to.be.eql(user.email)
-  //         })
-  //         .end(done)
-  //     })
-  //   })
-  // })
+    describe('without permission', () => {
 
-  // describe('delete', () => {
+      it('should raise 403', function (done) {
+        request
+          .put(`/api/v1/positions/${position.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${user2.email}:${user2.password}`).toString('base64'))
+          .send({title: 'title updated'})
+          .expect(403)
+          .end(done)
+      })
+    })
 
-  //   describe('with permission', () => {
+    describe('with permission', () => {
 
-  //     before(User.remove.bind(User));
+      it('should update', function (done) {
+        request
+          .put(`/api/v1/positions/${position.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
+          .send({title: 'title updated'})
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.title).to.be.eql('title updated')
+            expect(res.body.city).to.be.eql(position.city)
+          })
+          .end(done)
+      })
+    })
+  })
 
-  //     let user;
-  //     before( (done) => {
-  //       user = new User();
-  //       user.name = 'foo';
-  //       user.email = 'foo@domain.com';
-  //       user.password = 'pass';
-  //       user.save(done);
-  //     });
+  describe('delete', () => {
 
-  //     it('should delete user', function (done) {
-  //       request
-  //         .delete(`/api/v1/users/${user.id}`)
-  //         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
-  //         .expect(200)
-  //         .expect((res) => {
-  //           expect(res.body.name).to.be.eql(user.name)
-  //         })
-  //         .end(done)
-  //     })
+    describe('without permission', () => {
 
-  //     after('should get 404', function (done) {
-  //       request
-  //         .get(`/api/v1/users/${user.id}`)
-  //         .expect(404)
-  //         .end(done)
-  //     })
-  //   })
+      before(User.remove.bind(User));
+      before(Position.remove.bind(Position));
 
-  //   describe('without permission', () => {
+      let user;
+      before( (done) => {
+        user = new User();
+        user.name = 'foo';
+        user.email = 'foo@domain.com';
+        user.password = 'pass';
+        user.save(done);
+      });
 
-  //     before(User.remove.bind(User));
+      let position;
+      before( (done) => {
+        position = new Position();
+        position.title = 'title1';
+        position.description = 'description1';
+        position.city = 'city1';
+        position.state = 'state1';
+        position.status = 'status1';
+        position.createdBy = user.id;
+        position.save(done);
+      });
 
-  //     let user;
-  //     before( (done) => {
-  //       user = new User();
-  //       user.name = 'foo';
-  //       user.email = 'foo@domain.com';
-  //       user.password = 'pass';
-  //       user.save(done);
-  //     });
+      it('should delete position', function (done) {
+        request
+          .delete(`/api/v1/positions/${position.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
+          .expect(403)
+          .end(done)
+      })
+    })
 
-  //     it('should delete user', function (done) {
-  //       request
-  //         .delete(`/api/v1/users/${user.id}`)
-  //         .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
-  //         .expect(403)
-  //         .end(done)
-  //     })
-  //   })
-  // })
+    describe('with permission', () => {
+
+      before(User.remove.bind(User));
+      before(Position.remove.bind(Position));
+
+      let user;
+      before( (done) => {
+        user = new User();
+        user.name = 'foo';
+        user.email = 'foo@domain.com';
+        user.password = 'pass';
+        user.save(done);
+      });
+
+      let position;
+      before( (done) => {
+        position = new Position();
+        position.title = 'title1';
+        position.description = 'description1';
+        position.city = 'city1';
+        position.state = 'state1';
+        position.status = 'status1';
+        position.createdBy = user.id;
+        position.save(done);
+      });
+
+      it('should delete', function (done) {
+        request
+          .delete(`/api/v1/positions/${position.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
+          .expect(200)
+          .end(done)
+      })
+
+      after('should get 404', function (done) {
+        request
+          .get(`/api/v1/positions/${position.id}`)
+          .expect(404)
+          .end(done)
+      })
+    })
+  })
 
 })

@@ -6,4 +6,5 @@ test:
 		--reporter spec \
 		--require should \
 		--recursive \
+		# -g "position controller delete with permission" \
 		test
