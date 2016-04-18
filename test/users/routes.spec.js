@@ -11,23 +11,48 @@ describe('user controller', () => {
 
   describe('create', () => {
 
-    before(User.remove.bind(User));
+    describe('without valid properties', () => {
 
-    let user = {
-      name: 'foo',
-      email: 'email@email.com',
-      password: '*******'
-    }
+      before(User.remove.bind(User));
 
-    it('should create user', (done) => {
-      request
-        .post('/api/v1/users')
-        .send(user)
-        .expect(200)
-        .expect((res) => {
-          expect(res.body._id).to.be.ok
-        })
-        .end(done)
+      let user = {
+        name: 'foo',
+        password: '*******'
+      }
+
+      it('should create user', (done) => {
+        request
+          .post('/api/v1/users')
+          .send(user)
+          .expect(400)
+          .expect((res) => {
+            expect(res.body.email).to.be.eql('Path `email` is required.')
+          })
+          .end(done)
+      })
+    })
+
+    describe('with valid properties', () => {
+
+      before(User.remove.bind(User));
+
+      let user = {
+        name: 'foo',
+        email: 'email@email.com',
+        password: '*******'
+      }
+
+      it('should create user', (done) => {
+        request
+          .post('/api/v1/users')
+          .send(user)
+          .expect(201)
+          .expect((res) => {
+            expect(res.body._id).to.be.ok
+            expect(res.body.name).not.to.be.ok
+          })
+          .end(done)
+      })
     })
   })
 
@@ -50,7 +75,6 @@ describe('user controller', () => {
         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
         .expect(200)
         .expect((res) => {
-          console.log(res.body._id)
           expect(res.body._id).to.be.ok
         })
         .end(done)
@@ -101,8 +125,7 @@ describe('user controller', () => {
           .send({email: 'cannotupdate@gmail.com'})
           .expect(200)
           .expect((res) => {
-            expect(res.body.name).to.be.eql('bar')
-            expect(res.body.email).to.be.eql(user.email)
+            expect(res.body).to.be.eql({})
           })
           .end(done)
       })
@@ -128,9 +151,9 @@ describe('user controller', () => {
         request
           .delete(`/api/v1/users/${user.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
-          .expect(200)
+          .expect(204)
           .expect((res) => {
-            expect(res.body.name).to.be.eql(user.name)
+            expect(res.body).to.be.eql({})
           })
           .end(done)
       })
@@ -156,7 +179,7 @@ describe('user controller', () => {
         user.save(done);
       });
 
-      it('should delete user', function (done) {
+      it('should get 403', function (done) {
         request
           .delete(`/api/v1/users/${user.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))

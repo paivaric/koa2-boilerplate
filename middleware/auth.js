@@ -14,8 +14,6 @@ export default async (ctx, next) => {
       .where('email').equals(credentials.name || '')
       .where('hashedPassword').equals(hashedPassword)
       .exec()
-    console.log('loggedUser', ctx.session.user)
   }
-  console.log('credentials', credentials)
   await next()
 }

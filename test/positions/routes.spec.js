@@ -37,7 +37,7 @@ describe('position controller', () => {
         .post('/api/v1/positions')
         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
         .send(position)
-        .expect(200)
+        .expect(201)
         .expect((res) => {
           expect(res.body._id).to.be.ok
         })
@@ -225,7 +225,7 @@ describe('position controller', () => {
         request
           .delete(`/api/v1/positions/${position.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
-          .expect(200)
+          .expect(204)
           .end(done)
       })
 

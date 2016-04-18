@@ -10,9 +10,9 @@ import views from 'koa-views';
 import homeRoutes from './api/home/routes'
 import userRoutes from './api/users/routes'
 import positionRoutes from './api/positions/routes'
-import finalHandler from './finalHandler'
-import config from './config'
+import finalHandler from './middleware/finalHandler'
 import auth from './middleware/auth'
+import config from './config'
 
 nconf
   .argv()

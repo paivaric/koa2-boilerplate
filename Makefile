@@ -6,5 +6,5 @@ test:
 		--reporter spec \
 		--require should \
 		--recursive \
-		# -g "position controller delete with permission" \
+		# -g "user controller create with valid properties should create user" \
 		test

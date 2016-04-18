@@ -12,9 +12,9 @@ describe('Hello World', function () {
       .end(done)
   })
 
-  it('should receive 404', function (done) {
+  it('should get 404', function (done) {
     request
-      .get('/xxx')
+      .get('/yyy')
       .expect(404)
       .end(done)
   })
