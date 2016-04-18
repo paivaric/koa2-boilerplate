@@ -37,10 +37,13 @@ const api = Router({
 })
 
 api.use(userRoutes.routes())
+api.use(userRoutes.allowedMethods())
 api.use(positionRoutes.routes())
+api.use(positionRoutes.allowedMethods())
 
 
 app.use(homeRoutes.routes())
+app.use(homeRoutes.allowedMethods())
 app.use(api.routes())
 app.use(api.allowedMethods())
 

@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import validate from 'mongoose-validator';
 import crypto from 'crypto';
 import nconf from 'nconf';
-import _ from 'lodash';
 import mongooseAutopopulate from 'mongoose-autopopulate';
 import mongooseJsonSelect from 'mongoose-json-select';
 import update from 'mongoose-model-update';

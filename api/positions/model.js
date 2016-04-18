@@ -1,10 +1,17 @@
 'use strict';
 
 import mongoose from 'mongoose'
+import validate from 'mongoose-validator';
+import crypto from 'crypto';
+import nconf from 'nconf';
+import mongooseAutopopulate from 'mongoose-autopopulate';
+import mongooseJsonSelect from 'mongoose-json-select';
+import mongooseTimestamp from 'mongoose-timestamp'
+import update from 'mongoose-model-update';
 
-const ObjectId = mongoose.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId
 
-const schema = new new mongoose.Schema({
+const schema = new mongoose.Schema({
   'title': {
     'type': String,
     'required': true
@@ -31,20 +38,13 @@ const schema = new new mongoose.Schema({
   'createdBy': {
     'type': ObjectId,
     'ref': 'User',
-    'autopopulate': {
-      'select': 'name email _id'
-    },
     'required': true
   }
 })
 
-schema.index({
-  '$**': 'text'
-})
-
-schema.plugin(require('mongoose-timestamp'))
-schema.plugin(require('mongoose-autopopulate'))
-schema.plugin(require('mongoose-json-select'), {
+schema.plugin(mongooseTimestamp)
+schema.plugin(mongooseAutopopulate)
+schema.plugin(mongooseJsonSelect, {
   title: 1,
   description: 1,
   city: 1,
@@ -52,5 +52,7 @@ schema.plugin(require('mongoose-json-select'), {
   company: 1,
   createdAt: 1
 })
+
+schema.plugin(update, ['title', 'description', 'city', 'state', 'company']);
 
 export default mongoose.model('Position', schema)
