@@ -20,8 +20,6 @@ router.param('id', async (id, ctx, next) => {
 let checkOwner = async (ctx, next) => {
   let createdById = ctx.position && ctx.position.createdBy;
   let loggedUserId = ctx.session.user && ctx.session.user.id;
-  console.log('createdById', createdById)
-  console.log('loggedUserId', loggedUserId)
   if (!loggedUserId || !createdById || createdById != loggedUserId) {
     ctx.status = 403
     ctx.body = 'User not authorized'
