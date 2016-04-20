@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
 import mongoose from 'mongoose'
-import validate from 'mongoose-validator';
-import crypto from 'crypto';
-import nconf from 'nconf';
-import mongooseAutopopulate from 'mongoose-autopopulate';
-import mongooseJsonSelect from 'mongoose-json-select';
+import validate from 'mongoose-validator'
+import crypto from 'crypto'
+import nconf from 'nconf'
+import mongooseAutopopulate from 'mongoose-autopopulate'
+import mongooseJsonSelect from 'mongoose-json-select'
 import mongooseTimestamp from 'mongoose-timestamp'
-import update from 'mongoose-model-update';
+import update from 'mongoose-model-update'
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -53,6 +53,6 @@ schema.plugin(mongooseJsonSelect, {
   createdAt: 1
 })
 
-schema.plugin(update, ['title', 'description', 'city', 'state', 'company']);
+schema.plugin(update, ['title', 'description', 'city', 'state', 'company'])
 
 export default mongoose.model('Position', schema)

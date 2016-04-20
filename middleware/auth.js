@@ -1,6 +1,6 @@
-import basicAuth from 'basic-auth';
-import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import basicAuth from 'basic-auth'
+import crypto from 'crypto'
+import bcrypt from 'bcrypt'
 import nconf from 'nconf'
 
 import User from '../api/users/model'

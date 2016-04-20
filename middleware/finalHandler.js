@@ -21,7 +21,7 @@ export default () => {
         ctx.status = 400
         ctx.body = _.mapValues(error.errors, e => {return e.message})
       } else {
-        ctx.status = error.status || 500;
+        ctx.status = error.status || 500
       }
       // if (ctx.status === 404) {
       //   await ctx.render('error/404', { error })

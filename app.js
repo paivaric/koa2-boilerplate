@@ -2,35 +2,38 @@ import Koa from 'koa'
 import mongoose from 'mongoose'
 import Router from 'koa-router'
 import bodyParser from 'koa-bodyparser'
-import cors from 'kcors';
+import cors from 'kcors'
 import logger from 'koa-logger'
 import nconf from 'nconf'
-import views from 'koa-views';
+import views from 'koa-views'
 
 import homeRoutes from './api/home/routes'
 import userRoutes from './api/users/routes'
 import positionRoutes from './api/positions/routes'
 import finalHandler from './middleware/finalHandler'
 import auth from './middleware/auth'
+import queryParser from './middleware/queryParser'
 import config from './config'
 
 nconf
   .argv()
   .env()
-  .defaults(config);
+  .defaults(config)
 
 const app = new Koa()
 
 mongoose.connect(nconf.get('MONGODB_URL'))
+if (nconf.get('DEBUG')) mongoose.set('debug', true)
 
-app.use(finalHandler());
+app.use(finalHandler())
+app.use(queryParser())
 app.use(bodyParser())
 app.use(cors())
 app.use(logger())
 
 app.use(auth)
 
-app.use(views(`${__dirname}/views`));
+app.use(views(`${__dirname}/views`))
 
 const api = Router({
   prefix: '/api/v1'

@@ -1,12 +1,13 @@
-'use strict';
+'use strict'
 
 import mongoose from 'mongoose'
-import validate from 'mongoose-validator';
-import crypto from 'crypto';
-import nconf from 'nconf';
-import mongooseAutopopulate from 'mongoose-autopopulate';
-import mongooseJsonSelect from 'mongoose-json-select';
-import update from 'mongoose-model-update';
+import validate from 'mongoose-validator'
+import crypto from 'crypto'
+import nconf from 'nconf'
+import mongooseAutopopulate from 'mongoose-autopopulate'
+import mongooseJsonSelect from 'mongoose-json-select'
+import update from 'mongoose-model-update'
+import mongooseTimestamp from 'mongoose-timestamp'
 
 
 const schema = new mongoose.Schema({
@@ -31,6 +32,7 @@ const schema = new mongoose.Schema({
   }
 })
 
+schema.plugin(mongooseTimestamp)
 schema.plugin(mongooseAutopopulate)
 schema.plugin(mongooseJsonSelect, {
   name: 1,
@@ -55,6 +57,6 @@ schema.pre('save', async function preSave(next) {
   }
 })
 
-schema.plugin(update, ['name', 'password']);
+schema.plugin(update, ['name', 'password'])
 
 export default mongoose.model('User', schema)

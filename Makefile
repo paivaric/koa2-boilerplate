@@ -6,5 +6,5 @@ test:
 		--reporter spec \
 		--require should \
 		--recursive \
-		# -g "user controller create with valid properties should create user" \
+		# -g "user controller search" \
 		test

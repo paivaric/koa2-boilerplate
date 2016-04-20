@@ -12,17 +12,17 @@ describe('position controller', () => {
 
   describe('create', () => {
 
-    before(User.remove.bind(User));
-    before(Position.remove.bind(Position));
+    before(User.remove.bind(User))
+    before(Position.remove.bind(Position))
 
-    let user;
+    let user
     before( (done) => {
-      user = new User();
-      user.name = 'foo';
-      user.email = 'foo@domain.com';
-      user.password = 'pass';
-      user.save(done);
-    });
+      user = new User()
+      user.name = 'foo'
+      user.email = 'foo@domain.com'
+      user.password = 'pass'
+      user.save(done)
+    })
 
     let position = {
       title: 'title1',
@@ -47,29 +47,29 @@ describe('position controller', () => {
 
   describe('get one', () => {
 
-    before(User.remove.bind(User));
-    before(Position.remove.bind(Position));
+    before(User.remove.bind(User))
+    before(Position.remove.bind(Position))
 
-    let user;
+    let user
     before( (done) => {
-      user = new User();
-      user.name = 'foo';
-      user.email = 'foo@domain.com';
-      user.password = 'pass';
-      user.save(done);
-    });
+      user = new User()
+      user.name = 'foo'
+      user.email = 'foo@domain.com'
+      user.password = 'pass'
+      user.save(done)
+    })
 
-    let position;
+    let position
     before( (done) => {
-      position = new Position();
-      position.title = 'title1';
-      position.description = 'description1';
-      position.city = 'city1';
-      position.state = 'state1';
-      position.status = 'status1';
-      position.createdBy = user;
-      position.save(done);
-    });
+      position = new Position()
+      position.title = 'title1'
+      position.description = 'description1'
+      position.city = 'city1'
+      position.state = 'state1'
+      position.status = 'status1'
+      position.createdBy = user
+      position.save(done)
+    })
 
     it('should get positions', function (done) {
       request
@@ -84,38 +84,38 @@ describe('position controller', () => {
   })
 
   describe('update', () => {
-    before(User.remove.bind(User));
-    before(Position.remove.bind(Position));
+    before(User.remove.bind(User))
+    before(Position.remove.bind(Position))
 
-    let user;
+    let user
     before( (done) => {
-      user = new User();
-      user.name = 'foo';
-      user.email = 'foo@domain.com';
-      user.password = 'pass';
-      user.save(done);
-    });
+      user = new User()
+      user.name = 'foo'
+      user.email = 'foo@domain.com'
+      user.password = 'pass'
+      user.save(done)
+    })
 
-    let user2;
+    let user2
     before( (done) => {
-      user2 = new User();
-      user2.name = 'foo2';
-      user2.email = 'foo2@domain.com';
-      user2.password = 'pass2';
-      user2.save(done);
-    });
+      user2 = new User()
+      user2.name = 'foo2'
+      user2.email = 'foo2@domain.com'
+      user2.password = 'pass2'
+      user2.save(done)
+    })
 
-    let position;
+    let position
     before( (done) => {
-      position = new Position();
-      position.title = 'title1';
-      position.description = 'description1';
-      position.city = 'city1';
-      position.state = 'state1';
-      position.status = 'status1';
-      position.createdBy = user.id;
-      position.save(done);
-    });
+      position = new Position()
+      position.title = 'title1'
+      position.description = 'description1'
+      position.city = 'city1'
+      position.state = 'state1'
+      position.status = 'status1'
+      position.createdBy = user.id
+      position.save(done)
+    })
 
     describe('with wrong credentials', () => {
 
@@ -162,29 +162,29 @@ describe('position controller', () => {
 
     describe('without permission', () => {
 
-      before(User.remove.bind(User));
-      before(Position.remove.bind(Position));
+      before(User.remove.bind(User))
+      before(Position.remove.bind(Position))
 
-      let user;
+      let user
       before( (done) => {
-        user = new User();
-        user.name = 'foo';
-        user.email = 'foo@domain.com';
-        user.password = 'pass';
-        user.save(done);
-      });
+        user = new User()
+        user.name = 'foo'
+        user.email = 'foo@domain.com'
+        user.password = 'pass'
+        user.save(done)
+      })
 
-      let position;
+      let position
       before( (done) => {
-        position = new Position();
-        position.title = 'title1';
-        position.description = 'description1';
-        position.city = 'city1';
-        position.state = 'state1';
-        position.status = 'status1';
-        position.createdBy = user.id;
-        position.save(done);
-      });
+        position = new Position()
+        position.title = 'title1'
+        position.description = 'description1'
+        position.city = 'city1'
+        position.state = 'state1'
+        position.status = 'status1'
+        position.createdBy = user.id
+        position.save(done)
+      })
 
       it('should delete position', function (done) {
         request
@@ -197,29 +197,29 @@ describe('position controller', () => {
 
     describe('with permission', () => {
 
-      before(User.remove.bind(User));
-      before(Position.remove.bind(Position));
+      before(User.remove.bind(User))
+      before(Position.remove.bind(Position))
 
-      let user;
+      let user
       before( (done) => {
-        user = new User();
-        user.name = 'foo';
-        user.email = 'foo@domain.com';
-        user.password = 'pass';
-        user.save(done);
-      });
+        user = new User()
+        user.name = 'foo'
+        user.email = 'foo@domain.com'
+        user.password = 'pass'
+        user.save(done)
+      })
 
-      let position;
+      let position
       before( (done) => {
-        position = new Position();
-        position.title = 'title1';
-        position.description = 'description1';
-        position.city = 'city1';
-        position.state = 'state1';
-        position.status = 'status1';
-        position.createdBy = user.id;
-        position.save(done);
-      });
+        position = new Position()
+        position.title = 'title1'
+        position.description = 'description1'
+        position.city = 'city1'
+        position.state = 'state1'
+        position.status = 'status1'
+        position.createdBy = user.id
+        position.save(done)
+      })
 
       it('should delete', function (done) {
         request
