@@ -119,12 +119,12 @@ describe('position controller', () => {
 
     describe('with wrong credentials', () => {
 
-      it('should raise 403', function (done) {
+      it('should raise 401', function (done) {
         request
           .put(`/api/v1/positions/${position.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
           .send({title: 'title updated'})
-          .expect(403)
+          .expect(401)
           .end(done)
       })
     })
@@ -149,9 +149,8 @@ describe('position controller', () => {
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
           .send({title: 'title updated'})
           .expect(200)
-          .expect((res) => {
-            expect(res.body.title).to.be.eql('title updated')
-            expect(res.body.city).to.be.eql(position.city)
+          .expect(res => {
+            expect(res.body).to.be.eql({})
           })
           .end(done)
       })
@@ -174,6 +173,15 @@ describe('position controller', () => {
         user.save(done)
       })
 
+      let otherUser
+      before( (done) => {
+        otherUser = new User()
+        otherUser.name = 'otherUser'
+        otherUser.email = 'otherUser@domain.com'
+        otherUser.password = 'pass'
+        otherUser.save(done)
+      })
+
       let position
       before( (done) => {
         position = new Position()
@@ -186,10 +194,18 @@ describe('position controller', () => {
         position.save(done)
       })
 
-      it('should delete position', function (done) {
+      it('should raise 401', function (done) {
         request
           .delete(`/api/v1/positions/${position.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
+          .expect(401)
+          .end(done)
+      })
+
+      it('should raise 403', function (done) {
+        request
+          .delete(`/api/v1/positions/${position.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${otherUser.email}:pass`).toString('base64'))
           .expect(403)
           .end(done)
       })

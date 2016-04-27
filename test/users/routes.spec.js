@@ -72,7 +72,6 @@ describe('user controller', () => {
     it('should get user', function (done) {
       request
         .get(`/api/v1/users/${user.id}`)
-        .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
         .expect(200)
         .expect((res) => {
           expect(res.body._id).to.be.ok
@@ -94,7 +93,7 @@ describe('user controller', () => {
       user.save(done)
     })
 
-    it('should get user', function (done) {
+    it('should get users', function (done) {
       request
         .get(`/api/v1/users`)
         .query({'name' : 'foo'})
@@ -125,10 +124,28 @@ describe('user controller', () => {
         user.save(done)
       })
 
-      it('should update user', function (done) {
+      let otherUser
+      before( (done) => {
+        otherUser = new User()
+        otherUser.name = 'otherUser'
+        otherUser.email = 'otherUser@domain.com'
+        otherUser.password = 'pass'
+        otherUser.save(done)
+      })
+
+      it('should raise 401', function (done) {
         request
           .put(`/api/v1/users/${user.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
+          .send({name: 'bar'})
+          .expect(401)
+          .end(done)
+      })
+
+      it('should raise 403', function (done) {
+        request
+          .put(`/api/v1/users/${user.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${otherUser.email}:pass`).toString('base64'))
           .send({name: 'bar'})
           .expect(403)
           .end(done)
@@ -218,11 +235,11 @@ describe('user controller', () => {
         user.save(done)
       })
 
-      it('should get 403', function (done) {
+      it('should raise 403', function (done) {
         request
           .delete(`/api/v1/users/${user.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
-          .expect(403)
+          .expect(401)
           .end(done)
       })
     })

@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true,
-    minlength: 3,
+    minlength: 3
   },
   email: {
     type: String,
@@ -24,7 +24,7 @@ const schema = new mongoose.Schema({
     unique: true,
     validate: validate({
       validator: 'isEmail',
-      message: 'is not valid',
+      message: 'is not valid'
     })
   },
   hashedPassword: {

@@ -16,25 +16,22 @@ router.param('id', async (id, ctx, next) => {
 })
 
 let checkSameUser = async (ctx, next) => {
-  let sameUser = (ctx.user && ctx.user.id === (ctx.session.user && ctx.session.user.id))
-  if (!sameUser) {
-    ctx.throw(403)
-  } else {
-    await next()
-  }
+  if (!ctx.session.userId) ctx.throw(401)
+  if (ctx.user && ctx.user.id === ctx.session.userId) await next()
+  else ctx.throw(403)
 }
 
 let createMongoQuery = async (ctx, next) => {
   ctx.mongoQuery = ctx.modifier(User.find(ctx.query).lean())
-  await next()
+  await next();
 }
 
 router
   .get('/', createMongoQuery, async ctx => ctx.body = await ctx.mongoQuery.exec())
   .post('/', async ctx => ctx.body = await new User(ctx.request.body).save())
   .get('/:id', async ctx => ctx.body = ctx.user)
-  .put('/:id', checkSameUser, async ctx => await ctx.user.update(ctx.request.body))
-  .delete('/:id', checkSameUser, async ctx => await ctx.user.remove())
+  .put('/:id', checkSameUser, async ctx => ctx.body = await ctx.user.update(ctx.request.body))
+  .delete('/:id', checkSameUser, async ctx => ctx.body = await ctx.user.remove())
 
 
 

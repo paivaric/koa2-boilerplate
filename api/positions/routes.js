@@ -13,6 +13,7 @@ router.param('id', async (id, ctx, next) => {
 })
 
 let checkOwner = async (ctx, next) => {
+  if (!ctx.session.userId) ctx.throw(401)
   let createdById = ctx.position && ctx.position.createdBy
   let loggedUserId = ctx.session.user && ctx.session.user.id
   if (!loggedUserId || !createdById || createdById != loggedUserId) ctx.throw(403)
