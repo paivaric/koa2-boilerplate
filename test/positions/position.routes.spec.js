@@ -2,8 +2,8 @@ import app from '../../app'
 import supertest from 'supertest'
 import mongoose from 'mongoose'
 import chai from 'chai'
-import User from '../../api/users/model'
-import Position from '../../api/positions/model'
+import User from '../../api/users/user.model'
+import Position from '../../api/positions/position.model'
 
 const request = supertest.agent(app.listen())
 const expect = chai.expect

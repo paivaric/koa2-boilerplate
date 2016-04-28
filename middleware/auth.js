@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import nconf from 'nconf'
 
-import User from '../api/users/model'
+import User from '../api/users/user.model'
 
 export default async (ctx, next) => {
   let credentials = basicAuth(ctx)

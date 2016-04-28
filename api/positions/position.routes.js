@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import Position from './model'
+import Position from './position.model'
 
 const router = new Router({
   prefix: '/positions'

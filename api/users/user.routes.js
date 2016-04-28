@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import User from './model'
+import User from './user.model'
 
 const router = new Router({
   prefix: '/users'
