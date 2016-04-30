@@ -20,11 +20,6 @@ let checkOwner = async (ctx, next) => {
   await next()
 }
 
-let setCreatedBy = async (ctx, next) => {
-  ctx.request.body.createdBy = ctx.session.user
-  await next()
-}
-
 let createMongoQuery = async (ctx, next) => {
   ctx.mongoQuery = ctx.modifier(Vacancy.find(ctx.query).lean())
   await next()
@@ -32,7 +27,7 @@ let createMongoQuery = async (ctx, next) => {
 
 router
   .get('/', createMongoQuery, async ctx => ctx.body = await ctx.mongoQuery.exec())
-  .post('/', setCreatedBy, async ctx => ctx.body = await new Vacancy(ctx.request.body).save())
+  .post('/', async ctx => ctx.body = await new Vacancy(ctx.request.body).save())
   .get('/:id', async ctx => ctx.body = ctx.vacancy)
   .put('/:id', checkOwner, async ctx => ctx.body = await ctx.vacancy.update(ctx.request.body))
   .delete('/:id', checkOwner, async ctx => ctx.body = await ctx.vacancy.remove())
