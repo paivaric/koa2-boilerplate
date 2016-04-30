@@ -16,11 +16,11 @@ describe('user controller', () => {
       before(User.remove.bind(User))
 
       let user = {
-        name: 'foo',
+        name    : 'foo',
         password: '*******'
       }
 
-      it('should create user', (done) => {
+      it('should raise validation error', (done) => {
         request
           .post('/api/v1/users')
           .send(user)
@@ -37,8 +37,8 @@ describe('user controller', () => {
       before(User.remove.bind(User))
 
       let user = {
-        name: 'foo',
-        email: 'email@email.com',
+        name    : 'foo',
+        email   : 'email@email.com',
         password: '*******'
       }
 
@@ -61,7 +61,7 @@ describe('user controller', () => {
     before(User.remove.bind(User))
 
     let user
-    before( (done) => {
+    before((done) => {
       user = new User()
       user.name = 'foo'
       user.email = 'foo@domain.com'
@@ -85,7 +85,7 @@ describe('user controller', () => {
     before(User.remove.bind(User))
 
     let user
-    before( (done) => {
+    before((done) => {
       user = new User()
       user.name = 'foo'
       user.email = 'foo@domain.com'
@@ -96,11 +96,11 @@ describe('user controller', () => {
     it('should get users', function (done) {
       request
         .get(`/api/v1/users`)
-        .query({'name' : 'foo'})
-        .query({'$limit' : '1'})
-        .query({'$page' : '0'})
-        .query({'$select' : 'email'})
-        .query({'$sort' : '-name'})
+        .query({'name': 'foo'})
+        .query({'$limit': '1'})
+        .query({'$page': '0'})
+        .query({'$select': 'email'})
+        .query({'$sort': '-name'})
         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
         .expect(200)
         .expect((res) => {
@@ -116,7 +116,7 @@ describe('user controller', () => {
       before(User.remove.bind(User))
 
       let user
-      before( (done) => {
+      before((done) => {
         user = new User()
         user.name = 'foo'
         user.email = 'foo@domain.com'
@@ -125,7 +125,7 @@ describe('user controller', () => {
       })
 
       let otherUser
-      before( (done) => {
+      before((done) => {
         otherUser = new User()
         otherUser.name = 'otherUser'
         otherUser.email = 'otherUser@domain.com'
@@ -164,7 +164,9 @@ describe('user controller', () => {
         user.save(done)
       })
 
-      before(done => {setTimeout(done, 100)})
+      before(done => {
+        setTimeout(done, 100)
+      })
 
       it('should update user', function (done) {
         request
@@ -195,7 +197,7 @@ describe('user controller', () => {
       before(User.remove.bind(User))
 
       let user
-      before( (done) => {
+      before((done) => {
         user = new User()
         user.name = 'foo'
         user.email = 'foo@domain.com'
@@ -227,7 +229,7 @@ describe('user controller', () => {
       before(User.remove.bind(User))
 
       let user
-      before( (done) => {
+      before((done) => {
         user = new User()
         user.name = 'foo'
         user.email = 'foo@domain.com'
@@ -235,11 +237,28 @@ describe('user controller', () => {
         user.save(done)
       })
 
-      it('should raise 403', function (done) {
+      let otherUser
+      before((done) => {
+        otherUser = new User()
+        otherUser.name = 'bar'
+        otherUser.email = 'bar@domain.com'
+        otherUser.password = 'pass'
+        otherUser.save(done)
+      })
+
+      it('should raise 401', function (done) {
         request
           .delete(`/api/v1/users/${user.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
           .expect(401)
+          .end(done)
+      })
+
+      it('should raise 403', function (done) {
+        request
+          .delete(`/api/v1/users/${user.id}`)
+          .set('authorization', 'Basic ' + new Buffer(`${otherUser.email}:${otherUser.password}`).toString('base64'))
+          .expect(403)
           .end(done)
       })
     })

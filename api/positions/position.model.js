@@ -9,30 +9,30 @@ import update from 'mongoose-model-update'
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const schema = new mongoose.Schema({
-  title: {
-    type: String,
+  title      : {
+    type    : String,
     required: true
   },
   description: {
-    type: String,
+    type    : String,
     required: true
   },
-  city: {
-    type: String,
+  city       : {
+    type    : String,
     required: true
   },
-  state: {
-    type: String,
+  state      : {
+    type    : String,
     required: true
   },
-  status: {
-    type: String,
+  status     : {
+    type    : String,
     required: true
   },
-  company: String,
-  createdBy: {
-    type: ObjectId,
-    ref: 'User',
+  company    : String,
+  createdBy  : {
+    type    : ObjectId,
+    ref     : 'User',
     required: true
   }
 })
@@ -40,12 +40,12 @@ const schema = new mongoose.Schema({
 schema.plugin(mongooseTimestamp)
 schema.plugin(mongooseAutopopulate)
 schema.plugin(mongooseJsonSelect, {
-  title: 1,
+  title      : 1,
   description: 1,
-  city: 1,
-  state: 1,
-  company: 1,
-  createdAt: 1
+  city       : 1,
+  state      : 1,
+  company    : 1,
+  createdAt  : 1
 })
 
 schema.plugin(update, ['title', 'description', 'city', 'state', 'company'])

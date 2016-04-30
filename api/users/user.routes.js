@@ -16,6 +16,7 @@ router.param('id', async (id, ctx, next) => {
 })
 
 let checkSameUser = async (ctx, next) => {
+  console.log('ctx.session.userId', ctx.session.userId)
   if (!ctx.session.userId) ctx.throw(401)
   if (ctx.user && ctx.user.id === ctx.session.userId) await next()
   else ctx.throw(403)
@@ -32,7 +33,5 @@ router
   .get('/:id', async ctx => ctx.body = ctx.user)
   .put('/:id', checkSameUser, async ctx => ctx.body = await ctx.user.update(ctx.request.body))
   .delete('/:id', checkSameUser, async ctx => ctx.body = await ctx.user.remove())
-
-
 
 export default router

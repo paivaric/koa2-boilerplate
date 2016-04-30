@@ -10,8 +10,10 @@ import views from 'koa-views'
 import homeRoutes from './api/home/home.routes'
 import userRoutes from './api/users/user.routes'
 import positionRoutes from './api/positions/position.routes'
+import SkillRoutes from './api/skills/skill.routes'
 import finalHandler from './middleware/finalHandler'
 import auth from './middleware/auth'
+import by from './middleware/by'
 import queryParser from './middleware/queryParser'
 import config from './config'
 
@@ -31,7 +33,8 @@ app.use(bodyParser())
 app.use(cors())
 app.use(logger())
 
-app.use(auth)
+app.use(auth())
+app.use(by())
 
 app.use(views(`${__dirname}/views`))
 
@@ -44,6 +47,13 @@ api.use(userRoutes.allowedMethods())
 api.use(positionRoutes.routes())
 api.use(positionRoutes.allowedMethods())
 
+const userSkillsRoutes = SkillRoutes('User')
+api.use(userSkillsRoutes.routes())
+api.use(userSkillsRoutes.allowedMethods())
+
+const positionSkillsRoutes = SkillRoutes('Position')
+api.use(positionSkillsRoutes.routes())
+api.use(positionSkillsRoutes.allowedMethods())
 
 app.use(homeRoutes.routes())
 app.use(homeRoutes.allowedMethods())

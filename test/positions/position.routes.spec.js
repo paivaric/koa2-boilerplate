@@ -16,7 +16,7 @@ describe('position controller', () => {
     before(Position.remove.bind(Position))
 
     let user
-    before( (done) => {
+    before((done) => {
       user = new User()
       user.name = 'foo'
       user.email = 'foo@domain.com'
@@ -25,11 +25,11 @@ describe('position controller', () => {
     })
 
     let position = {
-      title: 'title1',
+      title      : 'title1',
       description: 'description1',
-      city: 'city1',
-      state: 'state1',
-      status: 'status1'
+      city       : 'city1',
+      state      : 'state1',
+      status     : 'status1'
     }
 
     it('should create position', (done) => {
@@ -51,7 +51,7 @@ describe('position controller', () => {
     before(Position.remove.bind(Position))
 
     let user
-    before( (done) => {
+    before((done) => {
       user = new User()
       user.name = 'foo'
       user.email = 'foo@domain.com'
@@ -60,7 +60,7 @@ describe('position controller', () => {
     })
 
     let position
-    before( (done) => {
+    before((done) => {
       position = new Position()
       position.title = 'title1'
       position.description = 'description1'
@@ -88,7 +88,7 @@ describe('position controller', () => {
     before(Position.remove.bind(Position))
 
     let user
-    before( (done) => {
+    before((done) => {
       user = new User()
       user.name = 'foo'
       user.email = 'foo@domain.com'
@@ -97,7 +97,7 @@ describe('position controller', () => {
     })
 
     let user2
-    before( (done) => {
+    before((done) => {
       user2 = new User()
       user2.name = 'foo2'
       user2.email = 'foo2@domain.com'
@@ -106,7 +106,7 @@ describe('position controller', () => {
     })
 
     let position
-    before( (done) => {
+    before((done) => {
       position = new Position()
       position.title = 'title1'
       position.description = 'description1'
@@ -165,7 +165,7 @@ describe('position controller', () => {
       before(Position.remove.bind(Position))
 
       let user
-      before( (done) => {
+      before((done) => {
         user = new User()
         user.name = 'foo'
         user.email = 'foo@domain.com'
@@ -174,7 +174,7 @@ describe('position controller', () => {
       })
 
       let otherUser
-      before( (done) => {
+      before((done) => {
         otherUser = new User()
         otherUser.name = 'otherUser'
         otherUser.email = 'otherUser@domain.com'
@@ -183,7 +183,7 @@ describe('position controller', () => {
       })
 
       let position
-      before( (done) => {
+      before((done) => {
         position = new Position()
         position.title = 'title1'
         position.description = 'description1'
@@ -217,7 +217,7 @@ describe('position controller', () => {
       before(Position.remove.bind(Position))
 
       let user
-      before( (done) => {
+      before((done) => {
         user = new User()
         user.name = 'foo'
         user.email = 'foo@domain.com'
@@ -226,7 +226,7 @@ describe('position controller', () => {
       })
 
       let position
-      before( (done) => {
+      before((done) => {
         position = new Position()
         position.title = 'title1'
         position.description = 'description1'

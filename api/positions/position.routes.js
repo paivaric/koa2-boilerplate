@@ -20,7 +20,7 @@ let checkOwner = async (ctx, next) => {
   await next()
 }
 
-let setCreadBy = async (ctx, next) => {
+let setCreatedBy = async (ctx, next) => {
   ctx.request.body.createdBy = ctx.session.user
   await next()
 }
@@ -32,7 +32,7 @@ let createMongoQuery = async (ctx, next) => {
 
 router
   .get('/', createMongoQuery, async ctx => ctx.body = await ctx.mongoQuery.exec())
-  .post('/', setCreadBy, async ctx => ctx.body = await new Position(ctx.request.body).save())
+  .post('/', setCreatedBy, async ctx => ctx.body = await new Position(ctx.request.body).save())
   .get('/:id', async ctx => ctx.body = ctx.position)
   .put('/:id', checkOwner, async ctx => ctx.body = await ctx.position.update(ctx.request.body))
   .delete('/:id', checkOwner, async ctx => ctx.body = await ctx.position.remove())
