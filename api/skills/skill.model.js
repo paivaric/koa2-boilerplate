@@ -45,8 +45,8 @@ export default parent => {
     }
   }
 
-  if (parent === 'Position') {
-    baseSchema.position = {
+  if (parent === 'Vacancy') {
+    baseSchema.vacancy = {
       type    : ObjectId,
       ref     : parent,
       required: true
@@ -59,7 +59,7 @@ export default parent => {
   schema.plugin(mongooseAutopopulate)
   schema.plugin(mongooseTimestamp)
   schema.plugin(mongooseJsonSelect, {
-    position: 1,
+    vacancy: 1,
     name    : 1,
     level   : 1,
     category: 1,

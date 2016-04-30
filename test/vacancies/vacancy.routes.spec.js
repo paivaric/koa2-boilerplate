@@ -3,17 +3,17 @@ import supertest from 'supertest'
 import mongoose from 'mongoose'
 import chai from 'chai'
 import User from '../../api/users/user.model'
-import Position from '../../api/positions/position.model'
+import Vacancy from '../../api/vacancies/vacancy.model.js'
 
 const request = supertest.agent(app.listen())
 const expect = chai.expect
 
-describe('position controller', () => {
+describe('vacancy controller', () => {
 
   describe('create', () => {
 
     before(User.remove.bind(User))
-    before(Position.remove.bind(Position))
+    before(Vacancy.remove.bind(Vacancy))
 
     let user
     before((done) => {
@@ -24,7 +24,7 @@ describe('position controller', () => {
       user.save(done)
     })
 
-    let position = {
+    let vacancy = {
       title      : 'title1',
       description: 'description1',
       city       : 'city1',
@@ -32,11 +32,11 @@ describe('position controller', () => {
       status     : 'status1'
     }
 
-    it('should create position', (done) => {
+    it('should create vacancy', (done) => {
       request
-        .post('/api/v1/positions')
+        .post('/api/v1/vacancies')
         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
-        .send(position)
+        .send(vacancy)
         .expect(201)
         .expect((res) => {
           expect(res.body._id).to.be.ok
@@ -48,7 +48,7 @@ describe('position controller', () => {
   describe('get one', () => {
 
     before(User.remove.bind(User))
-    before(Position.remove.bind(Position))
+    before(Vacancy.remove.bind(Vacancy))
 
     let user
     before((done) => {
@@ -59,21 +59,21 @@ describe('position controller', () => {
       user.save(done)
     })
 
-    let position
+    let vacancy
     before((done) => {
-      position = new Position()
-      position.title = 'title1'
-      position.description = 'description1'
-      position.city = 'city1'
-      position.state = 'state1'
-      position.status = 'status1'
-      position.createdBy = user
-      position.save(done)
+      vacancy = new Vacancy()
+      vacancy.title = 'title1'
+      vacancy.description = 'description1'
+      vacancy.city = 'city1'
+      vacancy.state = 'state1'
+      vacancy.status = 'status1'
+      vacancy.createdBy = user
+      vacancy.save(done)
     })
 
-    it('should get positions', function (done) {
+    it('should get vacancies', function (done) {
       request
-        .get(`/api/v1/positions/${position.id}`)
+        .get(`/api/v1/vacancies/${vacancy.id}`)
         .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
         .expect(200)
         .expect((res) => {
@@ -85,7 +85,7 @@ describe('position controller', () => {
 
   describe('update', () => {
     before(User.remove.bind(User))
-    before(Position.remove.bind(Position))
+    before(Vacancy.remove.bind(Vacancy))
 
     let user
     before((done) => {
@@ -105,23 +105,23 @@ describe('position controller', () => {
       user2.save(done)
     })
 
-    let position
+    let vacancy
     before((done) => {
-      position = new Position()
-      position.title = 'title1'
-      position.description = 'description1'
-      position.city = 'city1'
-      position.state = 'state1'
-      position.status = 'status1'
-      position.createdBy = user.id
-      position.save(done)
+      vacancy = new Vacancy()
+      vacancy.title = 'title1'
+      vacancy.description = 'description1'
+      vacancy.city = 'city1'
+      vacancy.state = 'state1'
+      vacancy.status = 'status1'
+      vacancy.createdBy = user.id
+      vacancy.save(done)
     })
 
     describe('with wrong credentials', () => {
 
       it('should raise 401', function (done) {
         request
-          .put(`/api/v1/positions/${position.id}`)
+          .put(`/api/v1/vacancies/${vacancy.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
           .send({title: 'title updated'})
           .expect(401)
@@ -133,7 +133,7 @@ describe('position controller', () => {
 
       it('should raise 403', function (done) {
         request
-          .put(`/api/v1/positions/${position.id}`)
+          .put(`/api/v1/vacancies/${vacancy.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user2.email}:${user2.password}`).toString('base64'))
           .send({title: 'title updated'})
           .expect(403)
@@ -145,7 +145,7 @@ describe('position controller', () => {
 
       it('should update', function (done) {
         request
-          .put(`/api/v1/positions/${position.id}`)
+          .put(`/api/v1/vacancies/${vacancy.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
           .send({title: 'title updated'})
           .expect(200)
@@ -162,7 +162,7 @@ describe('position controller', () => {
     describe('without permission', () => {
 
       before(User.remove.bind(User))
-      before(Position.remove.bind(Position))
+      before(Vacancy.remove.bind(Vacancy))
 
       let user
       before((done) => {
@@ -182,21 +182,21 @@ describe('position controller', () => {
         otherUser.save(done)
       })
 
-      let position
+      let vacancy
       before((done) => {
-        position = new Position()
-        position.title = 'title1'
-        position.description = 'description1'
-        position.city = 'city1'
-        position.state = 'state1'
-        position.status = 'status1'
-        position.createdBy = user.id
-        position.save(done)
+        vacancy = new Vacancy()
+        vacancy.title = 'title1'
+        vacancy.description = 'description1'
+        vacancy.city = 'city1'
+        vacancy.state = 'state1'
+        vacancy.status = 'status1'
+        vacancy.createdBy = user.id
+        vacancy.save(done)
       })
 
       it('should raise 401', function (done) {
         request
-          .delete(`/api/v1/positions/${position.id}`)
+          .delete(`/api/v1/vacancies/${vacancy.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:wrongpass`).toString('base64'))
           .expect(401)
           .end(done)
@@ -204,7 +204,7 @@ describe('position controller', () => {
 
       it('should raise 403', function (done) {
         request
-          .delete(`/api/v1/positions/${position.id}`)
+          .delete(`/api/v1/vacancies/${vacancy.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${otherUser.email}:pass`).toString('base64'))
           .expect(403)
           .end(done)
@@ -214,7 +214,7 @@ describe('position controller', () => {
     describe('with permission', () => {
 
       before(User.remove.bind(User))
-      before(Position.remove.bind(Position))
+      before(Vacancy.remove.bind(Vacancy))
 
       let user
       before((done) => {
@@ -225,21 +225,21 @@ describe('position controller', () => {
         user.save(done)
       })
 
-      let position
+      let vacancy
       before((done) => {
-        position = new Position()
-        position.title = 'title1'
-        position.description = 'description1'
-        position.city = 'city1'
-        position.state = 'state1'
-        position.status = 'status1'
-        position.createdBy = user.id
-        position.save(done)
+        vacancy = new Vacancy()
+        vacancy.title = 'title1'
+        vacancy.description = 'description1'
+        vacancy.city = 'city1'
+        vacancy.state = 'state1'
+        vacancy.status = 'status1'
+        vacancy.createdBy = user.id
+        vacancy.save(done)
       })
 
       it('should delete', function (done) {
         request
-          .delete(`/api/v1/positions/${position.id}`)
+          .delete(`/api/v1/vacancies/${vacancy.id}`)
           .set('authorization', 'Basic ' + new Buffer(`${user.email}:${user.password}`).toString('base64'))
           .expect(204)
           .end(done)
@@ -247,7 +247,7 @@ describe('position controller', () => {
 
       after('should get 404', function (done) {
         request
-          .get(`/api/v1/positions/${position.id}`)
+          .get(`/api/v1/vacancies/${vacancy.id}`)
           .expect(404)
           .end(done)
       })

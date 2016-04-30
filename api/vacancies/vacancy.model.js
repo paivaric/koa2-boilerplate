@@ -50,4 +50,4 @@ schema.plugin(mongooseJsonSelect, {
 
 schema.plugin(update, ['title', 'description', 'city', 'state', 'company'])
 
-export default mongoose.model('Position', schema)
+export default mongoose.model('Vacancy', schema)

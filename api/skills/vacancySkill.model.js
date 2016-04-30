@@ -1,3 +1,3 @@
 import Skill from './skill.model.js'
 
-export default Skill('Position')
+export default Skill('Vacancy')

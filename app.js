@@ -9,7 +9,7 @@ import views from 'koa-views'
 
 import homeRoutes from './api/home/home.routes'
 import userRoutes from './api/users/user.routes'
-import positionRoutes from './api/positions/position.routes'
+import vacancyRoutes from './api/vacancies/vacancy.routes.js'
 import SkillRoutes from './api/skills/skill.routes'
 import finalHandler from './middleware/finalHandler'
 import auth from './middleware/auth'
@@ -44,16 +44,16 @@ const api = Router({
 
 api.use(userRoutes.routes())
 api.use(userRoutes.allowedMethods())
-api.use(positionRoutes.routes())
-api.use(positionRoutes.allowedMethods())
+api.use(vacancyRoutes.routes())
+api.use(vacancyRoutes.allowedMethods())
 
 const userSkillsRoutes = SkillRoutes('User')
 api.use(userSkillsRoutes.routes())
 api.use(userSkillsRoutes.allowedMethods())
 
-const positionSkillsRoutes = SkillRoutes('Position')
-api.use(positionSkillsRoutes.routes())
-api.use(positionSkillsRoutes.allowedMethods())
+const vacancySkillsRoutes = SkillRoutes('Vacancy')
+api.use(vacancySkillsRoutes.routes())
+api.use(vacancySkillsRoutes.allowedMethods())
 
 app.use(homeRoutes.routes())
 app.use(homeRoutes.allowedMethods())
