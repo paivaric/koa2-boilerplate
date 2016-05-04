@@ -23,7 +23,7 @@ let checkSameUser = async (ctx, next) => {
 }
 
 let createMongoQuery = async (ctx, next) => {
-  ctx.mongoQuery = ctx.modifier(User.find(ctx.query).lean())
+  ctx.mongoQuery = ctx.modifier(User.find(ctx.query))
   await next();
 }
 

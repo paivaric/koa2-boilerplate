@@ -21,7 +21,7 @@ let checkOwner = async (ctx, next) => {
 }
 
 let createMongoQuery = async (ctx, next) => {
-  ctx.mongoQuery = ctx.modifier(Vacancy.find(ctx.query).lean())
+  ctx.mongoQuery = ctx.modifier(Vacancy.find(ctx.query))
   await next()
 }
 

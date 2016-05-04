@@ -33,7 +33,7 @@ export default parent => {
   }
 
   let createMongoQuery = async (ctx, next) => {
-    ctx.mongoQuery = ctx.modifier(Skill.find(ctx.query).lean())
+    ctx.mongoQuery = ctx.modifier(Skill.find(ctx.query) )
     await next();
   }
 

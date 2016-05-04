@@ -29,7 +29,18 @@ curl -i -X GET \
   --header "Host: x.com" \
   --header "apikey: key"
 
+## plugins
+curl -i -X GET \
+  --url http://localhost:8001/plugins
 
+curl -X POST http://localhost:8001/apis/x/plugins \
+    --data "name=cors" #\
+    # --data "config.origin=mockbin.com" \
+    # --data "config.methods=GET, POST" \
+    # --data "config.headers=Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Auth-Token" \
+    # --data "config.exposed_headers=X-Auth-Token" \
+    # --data "config.credentials=true" \
+    # --data "config.max_age=3600"
 
 
 

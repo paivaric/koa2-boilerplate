@@ -34,8 +34,9 @@ const schema = new mongoose.Schema({
 schema.plugin(mongooseTimestamp)
 schema.plugin(mongooseAutopopulate)
 schema.plugin(mongooseJsonSelect, {
-  name : 1,
-  email: 1
+  name          : 1,
+  email         : 1,
+  hashedPassword: 0
 })
 
 schema.virtual('password')
